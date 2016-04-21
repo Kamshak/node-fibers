@@ -3,6 +3,7 @@
 #ifndef WINDOWS
 #include <pthread.h>
 #include <limits.h>
+#include <unistd.h>
 #else
 #include <windows.h>
 #include <intrin.h>
