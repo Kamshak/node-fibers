@@ -29,6 +29,9 @@
 				'src/libcoro/coro.h',
 			],
 			'cflags!': ['-ansi', '-nostdinc++', '-nostdinc'],
+			'cflags_cc': [
+		              '-nostdinc++',
+		            ],
 			'ldflags': [
 			        '-nodefaultlibs',
 			      ],
@@ -38,7 +41,7 @@
 				# else
 					{
 						'defines': ['USE_CORO', 'CORO_GUARDPAGES=1'],
-						'ldflags': ['-pthread'],
+						'ldflags': ['-pthread', '-nodefaultlibs'],
 					}
 				],
 				['OS == "linux" or OS == "solaris" or OS == "sunos" or OS == "freebsd"', {'defines': ['CORO_PTHREAD']}],
