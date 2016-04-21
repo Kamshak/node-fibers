@@ -76,7 +76,7 @@ static DWORD __stdcall find_thread_id_key(LPVOID arg)
 	int thread_id = 0;
 	for (pthread_key_t ii = 0; ii < PTHREAD_KEYS_MAX; ++ii) {
 		void* tls = pthread_getspecific(ii);
-		if (can_poke(tls) && *(void**)tls == isolate) {
+		if (can_poke(tls) && tls != 0 && *(void**)tls == isolate) {
 			// First member of per-thread data is the isolate
 			thread_data_key = ii;
 			// Second member is the thread id
