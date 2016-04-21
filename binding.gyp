@@ -28,7 +28,7 @@
 				'src/coroutine.h',
 				'src/libcoro/coro.h',
 			],
-			'cflags!': ['-ansi'],
+			'cflags!': ['-ansi', '-nostdinc++'],
 			'conditions': [
 				['OS == "win"',
 					{'defines': ['CORO_FIBER', 'WINDOWS']},
