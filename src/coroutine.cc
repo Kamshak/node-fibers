@@ -2,6 +2,7 @@
 #include <assert.h>
 #ifndef WINDOWS
 #include <pthread.h>
+#include <limits.h>
 #else
 #include <windows.h>
 #include <intrin.h>
@@ -62,7 +63,7 @@ static DWORD __stdcall find_thread_id_key(LPVOID arg)
 	isolate->Enter();
 
 	// First pass-- find isolate thread key
-	for (pthread_key_t ii = coro_thread_key; ii > 0; --ii) {
+	for (pthread_key_t ii = PTHREAD_KEYS_MAX; ii > 0; --ii) {
 		void* tls = pthread_getspecific(ii - 1);
 		if (tls == isolate) {
 			isolate_key = ii - 1;
