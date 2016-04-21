@@ -45,8 +45,14 @@ static bool can_poke(void* addr) {
 	}
 	return true;
 #else
-	// TODO: Check pointer on other OS's? Windows is the only case I've seen so far that has
-	// spooky gaps in the TLS key space
+	// http://stackoverflow.com/questions/4611776/isbadreadptr-analogue-on-unix
+	int nullfd = open("/dev/random", O_WRONLY);
+	if (write(nullfd, addr, sizeof(void *)) < 0)
+	{
+	    return false;
+	}
+	close(nullfd);
+
 	return true;
 #endif
 }
@@ -76,7 +82,7 @@ static DWORD __stdcall find_thread_id_key(LPVOID arg)
 	int thread_id = 0;
 	for (pthread_key_t ii = 0; ii < PTHREAD_KEYS_MAX; ++ii) {
 		void* tls = pthread_getspecific(ii);
-		if (can_poke(tls) && tls != 0 && *(void**)tls == isolate) {
+		if (tls != 0 && can_poke(tls) && *(void**)tls == isolate) {
 			// First member of per-thread data is the isolate
 			thread_data_key = ii;
 			// Second member is the thread id
